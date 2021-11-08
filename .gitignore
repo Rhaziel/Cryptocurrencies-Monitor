@@ -1,0 +1,5 @@
+node_modules
+.env
+best-practices.md
+.idea
+dist

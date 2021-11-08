@@ -1,0 +1,32 @@
+{
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "mongoose": "^6.0.12"
+  },
+  "name": "cryptocurrencies-monitor",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "BABEL_DISABLE_CACHE=1 babel-node ./src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rhaziel/Cryptocurrencies-Monitor.git"
+  },
+  "author": "Jeremias Cortes",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Rhaziel/Cryptocurrencies-Monitor/issues"
+  },
+  "homepage": "https://github.com/Rhaziel/Cryptocurrencies-Monitor#readme",
+  "description": "",
+  "devDependencies": {
+    "@babel/cli": "^7.16.0",
+    "@babel/core": "^7.16.0",
+    "@babel/node": "^7.16.0",
+    "@babel/preset-env": "^7.16.0",
+    "nodemon": "^2.0.14"
+  }
+}
