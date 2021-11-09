@@ -10,6 +10,18 @@ const userSchema = new Schema({
     lastName: {
         type: String,
         required: [true, "lastname is required!"],
+    },
+    userName: {
+        type: String,
+        required: [true, "userName is required!"]
+    },
+    password: {
+        type: String,
+        required: [true, "password is required!"]
+    },
+    currencyPreference: {
+        type: String,
+        required: [true, "currency preference is required!"]
     }
 });
 

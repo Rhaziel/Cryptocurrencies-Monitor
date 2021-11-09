@@ -2,23 +2,33 @@ import user from "../models/user";
 
 /**
  *
- * @param {String} name
- * @param {String} lastName
+ * @param name {String}
+ * @param lastName {String}
+ * @param userName {String}
+ * @param password {String}
+ * @param currencyPreference {String}
  * @returns {Promise<user>}
  */
-export const createUser = ({name,lastName}) => {
+export const createUser = async ({name,lastName,userName,password,currencyPreference}) => {
 
-    return new Promise((resolve, reject) => {
+    try{
 
-        const newUser = new user({ name, lastName});
+        let userDoc = await user.findOne({userName: userName})
 
-        newUser.save()
-            .then( doc => resolve(doc))
-            .catch(err => {
-                console.error("createUser error: ",err)
-                reject(err)
-            })
-    })
+        if(userDoc)
+            return null
+
+        const newUser = new user({ name, lastName, userName, password, currencyPreference});
+
+        userDoc = await newUser.save()
+
+        return userDoc
+
+    }catch(error){
+        console.error("createUser error: ",error)
+        throw new Error("createUser error "+error)
+    }
+
 
 }
 

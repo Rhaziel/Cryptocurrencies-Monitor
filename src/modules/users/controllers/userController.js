@@ -5,12 +5,15 @@ export const createUserAction = async (req, res) => {
 
     try{
 
-        const {name, lastName} = req.body
+        const {name, lastName, userName, password, currencyPreference} = req.body
 
-        if(!name || !lastName)
-            res.status(400).send("name and lastName parameters is required!")
+        if(!name || !lastName || !userName || !password || !currencyPreference)
+            res.status(400).send("name, lastname, username, password and currencypreference parameters is required!")
 
-        let response = await createUser({name,lastName})
+        let response = await createUser({name,lastName,userName,password,currencyPreference})
+
+        if(!response)
+            res.status(200).send("username ya esta en uso")
 
         res.status(201).json(response)
 
