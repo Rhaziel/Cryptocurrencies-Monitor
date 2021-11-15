@@ -1,4 +1,6 @@
 import user from "../models/user";
+import {passwordEncrypt,getToken, passwordAuth} from "../../config/functions";
+
 
 /**
  *
@@ -18,7 +20,7 @@ export const createUser = async ({name,lastName,userName,password,currencyPrefer
         if(userDoc)
             return null
 
-        const newUser = new user({ name, lastName, userName, password, currencyPreference});
+        const newUser = new user({ name, lastName, userName, password: passwordEncrypt(password), currencyPreference});
 
         userDoc = await newUser.save()
 
@@ -28,8 +30,6 @@ export const createUser = async ({name,lastName,userName,password,currencyPrefer
         console.error("createUser error: ",error)
         throw new Error("createUser error "+error)
     }
-
-
 }
 
 export const getUser =() => {
@@ -48,3 +48,21 @@ export const getUser =() => {
 
 }
 
+export const authUser = async (userName, password) => {
+
+    try{
+
+        let userDoc = await user.findOne({userName: userName})
+
+        if(userDoc && passwordAuth(password,userDoc.password)) {
+            return getToken(userDoc.userId, userDoc.userName)
+        }else{
+            return null
+        }
+
+    }catch (error){
+        console.error("createUser error: ",error)
+        throw new Error("createUser error "+error)
+    }
+
+}
