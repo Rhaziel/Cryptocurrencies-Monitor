@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "axios": "^0.24.0",
     "bcrypt": "^5.0.1",
     "coingecko-api": "^1.0.10",
     "dotenv": "^10.0.0",

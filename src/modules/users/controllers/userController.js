@@ -34,7 +34,7 @@ export const createUserAction = async (req, res) => {
 export const getUserAction = async (req,res) => {
     try{
 
-        let response = await getUser()
+        let response = await getUser(req.param.userId)
 
         if(!response)
             res.status(404).send("content not found!")

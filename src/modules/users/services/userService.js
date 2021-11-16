@@ -32,13 +32,13 @@ export const createUser = async ({name,lastName,userName,password,currencyPrefer
     }
 }
 
-export const getUser =() => {
+export const getUser = (id) => {
 
     return new Promise((resolve, reject) => {
 
-        user.find()
-            .then(docs => {
-                resolve(docs)
+        user.findOne({_id: id})
+            .then(doc => {
+                resolve(doc)
             })
             .catch(error => {
                 console.error("getUser error: ",error)
@@ -55,7 +55,7 @@ export const authUser = async (userName, password) => {
         let userDoc = await user.findOne({userName: userName})
 
         if(userDoc && passwordAuth(password,userDoc.password)) {
-            return getToken(userDoc.userId, userDoc.userName)
+            return getToken(userDoc._id, userDoc.userName)
         }else{
             return null
         }

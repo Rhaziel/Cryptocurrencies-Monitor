@@ -1,3 +1,5 @@
+import currencyRoutes from "./modules/cryptocurrencies/routes/currencyRoutes";
+
 const express = require('express');
 const app = express();
 require('dotenv').config()
@@ -14,10 +16,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(jwt);
 
 app.use('/',userRoutes)
-
-app.get('/', (req,res) => {
-    res.send('Hello World')
-});
+app.use('/',currencyRoutes)
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);

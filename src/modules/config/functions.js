@@ -1,5 +1,7 @@
 const bcrypt = require("bcrypt");
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+dotenv.config();
 
 
 export const isOk = password => {
@@ -35,9 +37,9 @@ export  const getToken = (userId, userName) => {
         const payload = {userId, userName}
 
         const options = {
-            algorithm: HS256,
-            jwtId: userId,
-            expiresIn: process.env.JWT_LOGIN_EXPIRED_IN
+            expiresIn: process.env.JWT_LOGIN_EXPIRED_IN,
+            jwtid: userId.toString(),
+            algorithm: "HS256"
         }
 
         const token = jwt.sign(payload, process.env.JWT_SECRET, options);

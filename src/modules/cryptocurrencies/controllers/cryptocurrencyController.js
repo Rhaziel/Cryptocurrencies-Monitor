@@ -7,7 +7,7 @@ export const getCurrenciesAction = async (req,res) => {
         if(!req.user)
             return res.status(400).send("bad autorization!")
 
-        let response = await getCurrencies(req.user)
+        let response = await getCurrencies(req.user.userId)
 
         res.status(200).json(response)
 
