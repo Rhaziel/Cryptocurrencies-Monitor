@@ -1,4 +1,4 @@
-import {createUser, getUser,authUser} from "../services/userService";
+import {createUser, getUser,authUser,addNewCryptocurrencyToUser} from "../services/userService";
 import {isCurrencyValid, isOk} from "../../config/functions";
 
 export const createUserAction = async (req, res) => {
@@ -68,4 +68,31 @@ export  const authUserAction = async(req,res) =>{
         res.status(500).send("server error"+error)
     }
 
+}
+
+export const addCryptocurrencyToUserAction = async(req, res) => {
+
+    try {
+
+        if (!req.user)
+            return res.status(400).send("bad autorization!")
+
+        const userID = req.user.userId
+        const {Coin} = req.query
+
+        if (!Coin)
+            return res.status(400).send("Coin is required!")
+
+        const response = await addNewCryptocurrencyToUser(userID, Coin)
+
+        if (!response)
+            return res.status(400).send("Response not found!")
+
+        console.log("Response:"+response)
+
+        res.status(200).json(response)
+
+    }catch(error){
+        res.status(500).send("server error"+error)
+    }
 }

@@ -1,33 +1,72 @@
 import {getUser} from "../../users/services/userService";
-import axios from 'axios'
+import {getMarketCryptocurrencies, getMarketCryptocurrency} from "../providers/coingeckoService.js";
+import {response} from "express";
+require('dotenv').config()
 
 /**
  * traer la moneda preferida del usuario, luego con esa moneda hacer la pegada
  * a coingecko
- * @param id
+ * @param {String} id
+ * @param {number} coinsPerPage
+ * @param {number} pageCoin
+ * @param {String} order
  * @returns {Promise<Array>}
  */
-export const getCurrencies = async (id) => {
+export const getCurrencies = async (id,coinsPerPage = 10,pageCoin = 1,order = null) => {
 
     try{
 
-        const {currencyPreference} = await getUser(id)
+        const {currencyPreference} = await getUserPreferredCurrency(id)
 
-        console.log(currencyPreference)
+        const coinData = await getMarketCryptocurrencies(currencyPreference, coinsPerPage, pageCoin, order)
 
-        const URL_COINGECKO = 'https://api.coingecko.com/api/v3/'
-
-
-        let coinData = await axios.get(`${URL_COINGECKO}coins/markets?vs_currency=${currencyPreference}&order=market_cap_desc&per_page=10&page=1&sparkline=false`)
-
-        console.log(coinData.data)
-
-        return coinData.data.map(({id, symbol, name, image, current_price, last_updated}) => {
-            return ({id, symbol, name, image, current_price, last_updated})
-        })
+        return filterDataForResponse(coinData)
 
     }catch (error) {
         throw new Error("getCurrencies error "+error)
+    }
+
+}
+
+/**
+ * @description Returns the user's preferred quote.
+ * Consumed by "getCurrencies" Service.
+ * @param userID
+ * @returns {Promise<>}
+ */
+
+const getUserPreferredCurrency = userID => {
+    return new Promise((resolve,reject)=> {
+        getUser({userID})
+            .then(doc => {
+                resolve(doc.currencyPreference)
+            })
+            .catch(error => {
+                reject(error)
+            })
+    })
+
+}
+
+const filterDataForResponse = coinData => {
+    return coinData.map(({id, symbol, name, image, current_price, last_updated}) => {
+        return ({id, symbol, name, image, current_price, last_updated})
+    })
+}
+
+export const findCryptocurrencyById = async coinId => {
+
+    try{
+
+        const {id, symbol, name, image, last_updated} = await getMarketCryptocurrency(coinId)
+
+        console.log("id crypto: "+id)
+        console.log("id crypto type: "+typeof (id))
+
+        return {id, symbol, name, image, last_updated}
+
+    }catch(error) {
+        throw new Error("server error "+error)
     }
 
 }
